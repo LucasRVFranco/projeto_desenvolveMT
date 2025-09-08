@@ -1,31 +1,53 @@
 <div class="filtro-container">
-  <h2>Buscar Pessoas Desaparecidas</h2>
+  <h2>Desaparecidos</h2>
 
-  <form [formGroup]="filtroForm" (ngSubmit)="buscar()">
-    <input type="text" formControlName="nome" placeholder="Nome" />
-    
+  <!-- filtros -->
+  <form [formGroup]="filtroForm" (ngSubmit)="buscar()" class="filtros">
+    <input type="text" placeholder="Nome" formControlName="nome" />
     <select formControlName="sexo">
       <option value="">Sexo</option>
       <option value="MASCULINO">Masculino</option>
       <option value="FEMININO">Feminino</option>
     </select>
-
-    <input type="number" formControlName="idadeMin" placeholder="Idade mínima" />
-    <input type="number" formControlName="idadeMax" placeholder="Idade máxima" />
-
+    <select>
+        <option value="">Status</option>
+        <option value="DESAPARECIDO">Desaparecido</option>
+        <option value="LOCALIZADO">Localizado</option>
+    </select>
+    <input type="number" placeholder="Idade mín." formControlName="idadeMin" />
+    <input type="number" placeholder="Idade máx." formControlName="idadeMax" />
     <button type="submit" [disabled]="carregando">Buscar</button>
   </form>
 
-  <div *ngIf="carregando">Carregando...</div>
-  <div *ngIf="erro" class="erro">{{ erro }}</div>
+  <!-- estados -->
+  <div *ngIf="carregando" class="msg">Carregando...</div>
+  <div *ngIf="erro" class="msg erro">{{ erro }}</div>
 
-  <div *ngIf="resultados.length > 0" class="resultados">
-    <div *ngFor="let pessoa of resultados" class="pessoa-card">
-      <img *ngIf="pessoa.urlFoto" [src]="pessoa.urlFoto" alt="Foto" />
-      <div><strong>Nome:</strong> {{ pessoa.nome }}</div>
-      <div><strong>Idade:</strong> {{ pessoa.idade }}</div>
-      <div><strong>Sexo:</strong> {{ pessoa.sexo }}</div>
+  <!-- cards -->
+  <div class="grid" *ngIf="!carregando && !erro">
+    <div class="card" *ngFor="let p of pageItems()">
+      <img [ngSrc]="foto(p)" width="320" height="200" alt="Foto de {{ p.nome }}" />
+      <div class="card-body">
+        <h3>{{ p.nome }}</h3>
+        <p><strong>Idade:</strong> {{ p.idade || '-' }}</p>
+        <p><strong>Sexo:</strong> {{ p.sexo }}</p>
+        <p><strong>Desaparecimento:</strong> {{ dataDesap(p) }}</p>
+        <p class="local" *ngIf="local(p) !== '-'"><strong>Local:</strong> {{ local(p) }}</p>
+      </div>
     </div>
   </div>
-</div>
 
+  <!-- paginação -->
+  <div class="paginacao" *ngIf="totalPages() > 1">
+    <button (click)="prev()" [disabled]="currentPage() === 1">« Anterior</button>
+
+    <button
+      *ngFor="let p of [].constructor(totalPages()); let i = index"
+      [class.ativo]="currentPage() === (i + 1)"
+      (click)="setPage(i + 1)">
+      {{ i + 1 }}
+    </button>
+
+    <button (click)="next()" [disabled]="currentPage() === totalPages()">Próxima »</button>
+  </div>
+</div>
