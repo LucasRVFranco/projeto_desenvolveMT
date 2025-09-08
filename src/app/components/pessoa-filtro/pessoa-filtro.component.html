@@ -1,0 +1,31 @@
+<div class="filtro-container">
+  <h2>Buscar Pessoas Desaparecidas</h2>
+
+  <form [formGroup]="filtroForm" (ngSubmit)="buscar()">
+    <input type="text" formControlName="nome" placeholder="Nome" />
+    
+    <select formControlName="sexo">
+      <option value="">Sexo</option>
+      <option value="MASCULINO">Masculino</option>
+      <option value="FEMININO">Feminino</option>
+    </select>
+
+    <input type="number" formControlName="idadeMin" placeholder="Idade mínima" />
+    <input type="number" formControlName="idadeMax" placeholder="Idade máxima" />
+
+    <button type="submit" [disabled]="carregando">Buscar</button>
+  </form>
+
+  <div *ngIf="carregando">Carregando...</div>
+  <div *ngIf="erro" class="erro">{{ erro }}</div>
+
+  <div *ngIf="resultados.length > 0" class="resultados">
+    <div *ngFor="let pessoa of resultados" class="pessoa-card">
+      <img *ngIf="pessoa.urlFoto" [src]="pessoa.urlFoto" alt="Foto" />
+      <div><strong>Nome:</strong> {{ pessoa.nome }}</div>
+      <div><strong>Idade:</strong> {{ pessoa.idade }}</div>
+      <div><strong>Sexo:</strong> {{ pessoa.sexo }}</div>
+    </div>
+  </div>
+</div>
+

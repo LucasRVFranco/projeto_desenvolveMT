@@ -1,0 +1,24 @@
+.estatistico-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  text-align: center;
+
+  h2 {
+    color: #1976d2;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin: 8px 0;
+  }
+
+  .erro {
+    color: red;
+    font-weight: bold;
+  }
+}

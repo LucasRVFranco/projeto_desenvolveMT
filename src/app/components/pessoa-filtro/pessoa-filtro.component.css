@@ -1,0 +1,40 @@
+.filtro-container {
+  background: #f7f7f7;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 8px;
+  max-width: 700px;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input, select, button {
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.resultados {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pessoa-card {
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 200px;
+  text-align: center;
+}
+
+.pessoa-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}

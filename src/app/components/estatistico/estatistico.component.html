@@ -1,0 +1,16 @@
+<div class="estatistico-container">
+  <h2>Estatísticas</h2>
+
+  <div *ngIf="erro" class="erro">
+    {{ erro }}
+  </div>
+
+  <div *ngIf="desaparecidos !== null && encontrados !== null; else carregando">
+    <p><strong>Pessoas desaparecidas:</strong> {{ desaparecidos }}</p>
+    <p><strong>Pessoas encontradas:</strong> {{ encontrados }}</p>
+  </div>
+
+  <ng-template #carregando>
+    <p>Carregando estatísticas...</p>
+  </ng-template>
+</div>

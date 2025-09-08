@@ -1,0 +1,27 @@
+header {
+        display: flex;
+        padding: 10px 3%;
+        background: linear-gradient(to right, black, gray);
+    
+    .navbar{}
+
+    .logo{
+        img{
+            width: 60px;
+            height: 100%;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+    }
+
+    .PJC{
+        font-family: sans-serif;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        justify-content: s;
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+}
