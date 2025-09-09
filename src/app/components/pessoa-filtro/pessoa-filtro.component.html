@@ -25,16 +25,25 @@
 
   <!-- cards -->
   <div class="grid" *ngIf="!carregando && !erro">
-    <div class="card" *ngFor="let p of pageItems()">
-      <img [ngSrc]="foto(p)" width="320" height="200" alt="Foto de {{ p.nome }}" />
+    <a class="card" *ngFor="let p of pageItems()" [routerLink]="['/pessoa', p.id]">
+      <!-- ✅ fallback em erro de carregamento -->
+      <img
+        [ngSrc]="foto(p)"
+        width="320"
+        height="200"
+        alt="Foto de {{ p.nome }}"
+        (error)="onImgError($event)"
+      />
       <div class="card-body">
         <h3>{{ p.nome }}</h3>
         <p><strong>Idade:</strong> {{ p.idade || '-' }}</p>
         <p><strong>Sexo:</strong> {{ p.sexo }}</p>
         <p><strong>Desaparecimento:</strong> {{ dataDesap(p) }}</p>
-        <p class="local" *ngIf="local(p) !== '-'"><strong>Local:</strong> {{ local(p) }}</p>
+        <p class="local" *ngIf="local(p) !== '-'">
+          <strong>Local:</strong> {{ local(p) }}
+        </p>
       </div>
-    </div>
+    </a>
   </div>
 
   <!-- paginação -->

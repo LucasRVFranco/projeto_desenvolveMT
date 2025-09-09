@@ -2,6 +2,7 @@ import { Component, OnInit, computed, signal } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 
 type Sexo = 'MASCULINO' | 'FEMININO';
 type Status = 'DESAPARECIDO' | 'LOCALIZADO';
@@ -30,7 +31,7 @@ interface Pessoa {
 @Component({
   selector: 'app-pessoa-filtro',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgOptimizedImage],
+  imports: [CommonModule, ReactiveFormsModule, NgOptimizedImage, RouterLink],
   templateUrl: './pessoa-filtro.component.html',
   styleUrls: ['./pessoa-filtro.component.css'],
 })
@@ -155,7 +156,13 @@ export class PessoaFiltroComponent implements OnInit {
 
   // helpers
   foto(p: Pessoa): string {
-    return p?.urlFoto && p.urlFoto.trim() !== '' ? p.urlFoto : '/desaparecido.jpg';
+    return p?.urlFoto && p.urlFoto.trim() !== ''
+      ? p.urlFoto
+      : '/desaparecido.jpg';
+  }
+  onImgError(ev: Event) {
+    const img = ev.target as HTMLImageElement;
+    img.src = '/desaparecido.jpg';
   }
   dataDesap(p: Pessoa): string {
     const dt = p?.ultimaOcorrencia?.dtDesaparecimento;

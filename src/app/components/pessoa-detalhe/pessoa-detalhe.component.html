@@ -1,0 +1,36 @@
+<div class="detalhe">
+  <div *ngIf="carregando">Carregando...</div>
+  <div *ngIf="erro" class="erro">{{ erro }}</div>
+
+  <div *ngIf="!carregando && pessoa">
+  <div class="topo">
+    <img
+      [ngSrc]="foto()"
+      width="420"
+      height="280"
+      alt="Foto de {{ pessoa?.nome }}"
+      (error)="onImgError($event)"
+    />
+    <div class="info">
+      <h2>{{ pessoa?.nome }}</h2>
+      <p><strong>Idade:</strong> {{ pessoa?.idade || '-' }}</p>
+      <p><strong>Sexo:</strong> {{ pessoa?.sexo }}</p>
+      <p><strong>Desaparecimento:</strong> {{ dataDesap() }}</p>
+      <p *ngIf="pessoa?.ultimaOcorrencia?.localDesaparecimentoConcat">
+        <strong>Local:</strong> {{ pessoa?.ultimaOcorrencia?.localDesaparecimentoConcat }}
+      </p>
+      <a routerLink="/" class="voltar">← Voltar</a>
+    </div>
+  </div>
+
+    <div class="bloco" *ngIf="pessoa?.ultimaOcorrencia?.ocorrenciaEntrevDesapDTO?.informacao">
+      <h3>Informações</h3>
+      <p>{{ pessoa?.ultimaOcorrencia?.ocorrenciaEntrevDesapDTO?.informacao }}</p>
+    </div>
+
+    <div class="bloco" *ngIf="pessoa?.ultimaOcorrencia?.ocorrenciaEntrevDesapDTO?.vestimentasDesaparecido">
+      <h3>Vestimentas</h3>
+      <p>{{ pessoa?.ultimaOcorrencia?.ocorrenciaEntrevDesapDTO?.vestimentasDesaparecido }}</p>
+    </div>
+  </div>
+</div>
