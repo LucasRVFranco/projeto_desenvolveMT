@@ -1,7 +1,5 @@
 # Projeto Prático Desenvolve MT
 
-## Portal de Pessoas Desaparecidas
-
 ### Dados candidato:
 - **Nome:** Lucas Rondon Vieira Franco
 - **E-mail:** lucasfranco.lf92@gmail.com
@@ -16,7 +14,6 @@ SPA para consulta de pessoas desaparecidas, consumindo a API pública da Políci
 
 ## 🏛️ Padrão
 - SPA (Single Page Application)  
-- Arquitetura em Camadas  
 
 
 ## 🛠️ Tecnologias
@@ -36,7 +33,7 @@ SPA para consulta de pessoas desaparecidas, consumindo a API pública da Políci
 ## 🚀 Como rodar o projeto
 
 ### Pré-requisitos:
-- Ter o [Docker](https://docs.docker.com/get-docker/) instalado e em execução  
+- Ter o [Docker] instalado e em execução  
 
 ---
 
