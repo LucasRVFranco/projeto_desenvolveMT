@@ -1,8 +1,4 @@
-<div class="detalhe">
-  <div *ngIf="carregando">Carregando...</div>
-  <div *ngIf="erro" class="erro">{{ erro }}</div>
-
-  <div *ngIf="!carregando && pessoa">
+<div *ngIf="!carregando && pessoa">
   <div class="topo">
     <img
       [ngSrc]="foto()"
@@ -23,14 +19,43 @@
     </div>
   </div>
 
-    <div class="bloco" *ngIf="pessoa?.ultimaOcorrencia?.ocorrenciaEntrevDesapDTO?.informacao">
-      <h3>Informações</h3>
-      <p>{{ pessoa?.ultimaOcorrencia?.ocorrenciaEntrevDesapDTO?.informacao }}</p>
+  <!-- feedback -->
+  <div *ngIf="sucessoMsg" class="sucesso">{{ sucessoMsg }}</div>
+  <div *ngIf="erro" class="erro">{{ erro }}</div>
+
+  <!-- formulário para enviar informações/arquivos -->
+  <form class="enviar-info" [formGroup]="infoForm" (ngSubmit)="enviarInformacao()">
+    <h3>Informar avistamento / evidências</h3>
+
+    <label>
+      Informação *
+      <textarea rows="3" formControlName="informacao" placeholder="Descreva o que foi visto..."></textarea>
+    </label>
+
+    <label>
+      Descrição do anexo *
+      <input type="text" formControlName="descricao" placeholder="Ex.: Foto João da Silva" />
+    </label>
+
+    <div class="linha">
+      <label>
+        Data (yyyy-MM-dd) *
+        <input type="date" formControlName="data" />
+      </label>
+
+      <label>
+        Ocorrência (ocoId) *
+        <input type="number" formControlName="ocoId" />
+      </label>
     </div>
 
-    <div class="bloco" *ngIf="pessoa?.ultimaOcorrencia?.ocorrenciaEntrevDesapDTO?.vestimentasDesaparecido">
-      <h3>Vestimentas</h3>
-      <p>{{ pessoa?.ultimaOcorrencia?.ocorrenciaEntrevDesapDTO?.vestimentasDesaparecido }}</p>
-    </div>
-  </div>
+    <label>
+      Anexos (imagens, PDFs, etc.)
+      <input type="file" multiple (change)="onFilesSelected($event)" />
+    </label>
+
+    <button type="submit" [disabled]="enviando || infoForm.invalid">
+      {{ enviando ? 'Enviando...' : 'Enviar informações' }}
+    </button>
+  </form>
 </div>
