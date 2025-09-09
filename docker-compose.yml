@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  desenvolvemtt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: desenvolvemtt:latest
+    container_name: desenvolvemtt
+    ports:
+      - "8080:80"
+    restart: unless-stopped

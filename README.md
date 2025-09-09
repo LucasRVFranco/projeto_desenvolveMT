@@ -1,27 +1,69 @@
-# DesenvolveMt
+# Projeto Prático Desenvolve MT
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.4.
+## Portal de Pessoas Desaparecidas
 
-## Development server
+### Dados candidato:
+- **Nome:** Lucas Rondon Vieira Franco
+- **E-mail:** lucasfranco.lf92@gmail.com
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## 📖 Descrição do Projeto
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+SPA para consulta de pessoas desaparecidas, consumindo a API pública da Polícia Judiciária Civil de Mato Grosso.  
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🏛️ Padrão
+- SPA (Single Page Application)  
+- Arquitetura em Camadas  
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## 🛠️ Tecnologias
+- Angular  
+- TypeScript  
+- CSS (estilização customizada)  
 
-## Running end-to-end tests
+---
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## ⚒️ Ferramentas
+- VSCode (Visual Studio Code)  
+- Git / GitHub  
+- Docker  
 
-## Further help
+---
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🚀 Como rodar o projeto
+
+### Pré-requisitos:
+- Ter o [Docker](https://docs.docker.com/get-docker/) instalado e em execução  
+
+---
+
+### 👉 Rodando com Docker Compose
+
+1. **Suba a aplicação com Docker Compose** 
+# Na raiz do projeot rode: 
+docker compose up -d 
+
+# Acesse no navegador
+http://localhost:8080
+
+# Para remover o container
+docker compose down
+
+---
+
+### 👉 Rodando com Docker
+
+# Build da imagem
+docker build -t desenvolvemtt:latest .
+
+# Rodar o container
+docker run --rm -p 8080:80 desenvolvemtt:latest
+
+# Acesse
+http://localhost:8080
+
+---
+
