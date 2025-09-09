@@ -9,51 +9,56 @@
     />
     <div class="info">
       <h2>{{ pessoa?.nome }}</h2>
+      <div class="status-wrap" *ngIf="pessoa">
+        <span class="{{ statusPessoa().classe }}">
+          {{ statusPessoa().label }}
+        </span>
+        <small class="status-detalhe">
+          {{ statusPessoa().detalhe }}
+        </small>
+      </div>
       <p><strong>Idade:</strong> {{ pessoa?.idade || '-' }}</p>
       <p><strong>Sexo:</strong> {{ pessoa?.sexo }}</p>
       <p><strong>Desaparecimento:</strong> {{ dataDesap() }}</p>
       <p *ngIf="pessoa?.ultimaOcorrencia?.localDesaparecimentoConcat">
         <strong>Local:</strong> {{ pessoa?.ultimaOcorrencia?.localDesaparecimentoConcat }}
       </p>
-      <a routerLink="/" class="voltar">← Voltar</a>
+      <div class="botoes-acao">
+        <button class="btn-informar" (click)="toggleFormulario()">
+          {{ mostrarFormulario ? '✕ Fechar Formulário' : '+ Informar Avistamento' }}
+        </button>
+        <a routerLink="/" class="voltar">← Voltar</a>
+      </div>
     </div>
   </div>
-
-  <!-- feedback -->
+  
   <div *ngIf="sucessoMsg" class="sucesso">{{ sucessoMsg }}</div>
   <div *ngIf="erro" class="erro">{{ erro }}</div>
-
-  <!-- formulário para enviar informações/arquivos -->
-  <form class="enviar-info" [formGroup]="infoForm" (ngSubmit)="enviarInformacao()">
+  
+  <form class="enviar-info" [formGroup]="infoForm" (ngSubmit)="enviarInformacao()" *ngIf="mostrarFormulario">
     <h3>Informar avistamento / evidências</h3>
-
     <label>
       Informação *
       <textarea rows="3" formControlName="informacao" placeholder="Descreva o que foi visto..."></textarea>
     </label>
-
     <label>
       Descrição do anexo *
       <input type="text" formControlName="descricao" placeholder="Ex.: Foto João da Silva" />
     </label>
-
     <div class="linha">
       <label>
         Data (yyyy-MM-dd) *
         <input type="date" formControlName="data" />
       </label>
-
-      <label>
+      <!-- <label>
         Ocorrência (ocoId) *
         <input type="number" formControlName="ocoId" />
-      </label>
+      </label> -->
     </div>
-
     <label>
       Anexos (imagens, PDFs, etc.)
       <input type="file" multiple (change)="onFilesSelected($event)" />
     </label>
-
     <button type="submit" [disabled]="enviando || infoForm.invalid">
       {{ enviando ? 'Enviando...' : 'Enviar informações' }}
     </button>

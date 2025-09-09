@@ -36,29 +36,22 @@ interface Pessoa {
   styleUrls: ['./pessoa-filtro.component.css'],
 })
 export class PessoaFiltroComponent implements OnInit {
-  // formulário
   filtroForm!: FormGroup;
-
-  // estado básico
   carregando = false;
   erro: string | null = null;
 
-  // paginação
   readonly PAGE_SIZE = 10;
   readonly MAX_PAGES = 3;
 
-  // usamos signals para reatividade simples
   private allResultados = signal<Pessoa[]>([]);
   currentPage = signal<number>(1);
 
-  // fatia da página atual (10 por página)
   pageItems = computed(() => {
     const page = this.currentPage();
     const start = (page - 1) * this.PAGE_SIZE;
     return this.allResultados().slice(start, start + this.PAGE_SIZE);
   });
 
-  // total de páginas (limitado a 3)
   totalPages = computed(() => {
     const pages = Math.ceil(this.allResultados().length / this.PAGE_SIZE);
     return Math.min(pages || 1, this.MAX_PAGES);
@@ -67,7 +60,6 @@ export class PessoaFiltroComponent implements OnInit {
   constructor(private fb: FormBuilder, private http: HttpClient) {}
 
   ngOnInit(): void {
-    // cria form
     this.filtroForm = this.fb.group({
       nome: [''],
       sexo: [''],
@@ -76,7 +68,6 @@ export class PessoaFiltroComponent implements OnInit {
       idadeMax: [''],
     });
 
-    // carrega 30 registros aleatórios com foto ao entrar
     this.carregarDinamicoInicial();
   }
 
@@ -85,11 +76,10 @@ export class PessoaFiltroComponent implements OnInit {
     this.erro = null;
 
     const url = 'https://abitus-api.geia.vip/v1/pessoas/aberto/dinamico';
-    const params = new HttpParams().set('registros', '30'); // 3 páginas x 10
+    const params = new HttpParams().set('registros', '30');
 
     this.http.get<Pessoa[]>(url, { params }).subscribe({
       next: (lista) => {
-        // garante array e evita nulos
         const limpo = Array.isArray(lista)
           ? lista.filter((p) => p && p.id != null)
           : [];
@@ -105,7 +95,6 @@ export class PessoaFiltroComponent implements OnInit {
     });
   }
 
-  // busca por filtros (GET com query params)
   buscar(): void {
     this.carregando = true;
     this.erro = null;
@@ -123,12 +112,10 @@ export class PessoaFiltroComponent implements OnInit {
       .get<{ content?: Pessoa[] } | Pessoa[]>(url, { params })
       .subscribe({
         next: (res) => {
-          // a API pode retornar uma lista direta ou um wrapper com content
           const lista = Array.isArray(res) ? res : res?.content ?? [];
           const limpo = Array.isArray(lista)
             ? lista.filter((p) => p && p.id != null)
             : [];
-          // mantém só o que cabe em até 3 páginas (30)
           this.allResultados.set(
             limpo.slice(0, this.MAX_PAGES * this.PAGE_SIZE)
           );
@@ -143,7 +130,6 @@ export class PessoaFiltroComponent implements OnInit {
       });
   }
 
-  // paginação
   setPage(p: number): void {
     if (p >= 1 && p <= this.totalPages()) this.currentPage.set(p);
   }
@@ -154,7 +140,6 @@ export class PessoaFiltroComponent implements OnInit {
     this.setPage(this.currentPage() + 1);
   }
 
-  // helpers
   foto(p: Pessoa): string {
     return p?.urlFoto && p.urlFoto.trim() !== ''
       ? p.urlFoto

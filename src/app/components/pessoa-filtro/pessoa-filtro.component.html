@@ -1,7 +1,7 @@
 <div class="filtro-container">
-  <h2>Desaparecidos</h2>
+  <h2>Buscar por pessoas desaparecidas</h2>
 
-  <!-- filtros -->
+
   <form [formGroup]="filtroForm" (ngSubmit)="buscar()" class="filtros">
     <input type="text" placeholder="Nome" formControlName="nome" />
     <select formControlName="sexo">
@@ -19,14 +19,11 @@
     <button type="submit" [disabled]="carregando">Buscar</button>
   </form>
 
-  <!-- estados -->
   <div *ngIf="carregando" class="msg">Carregando...</div>
   <div *ngIf="erro" class="msg erro">{{ erro }}</div>
 
-  <!-- cards -->
   <div class="grid" *ngIf="!carregando && !erro">
     <a class="card" *ngFor="let p of pageItems()" [routerLink]="['/pessoa', p.id]">
-      <!-- ✅ fallback em erro de carregamento -->
       <img
         [ngSrc]="foto(p)"
         width="320"
@@ -46,7 +43,6 @@
     </a>
   </div>
 
-  <!-- paginação -->
   <div class="paginacao" *ngIf="totalPages() > 1">
     <button (click)="prev()" [disabled]="currentPage() === 1">« Anterior</button>
 

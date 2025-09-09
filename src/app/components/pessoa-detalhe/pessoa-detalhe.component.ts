@@ -44,7 +44,8 @@ export class PessoaDetalheComponent implements OnInit {
   carregando = true;
   erro: string | null = null;
 
-  // --- formulário de envio de informação/anexos ---
+  mostrarFormulario = false;
+
   infoForm!: FormGroup;
   anexos: File[] = [];
   enviando = false;
@@ -69,11 +70,10 @@ export class PessoaDetalheComponent implements OnInit {
       .subscribe({
         next: (p) => {
           this.pessoa = p;
-          // cria o form já com o ocoId (se existir)
           this.infoForm = this.fb.group({
             informacao: ['', Validators.required],
             descricao: ['', Validators.required],
-            data: ['', Validators.required], // yyyy-MM-dd
+            data: ['', Validators.required],
             ocoId: [p?.ultimaOcorrencia?.ocoId ?? null, Validators.required],
           });
           this.carregando = false;
@@ -86,21 +86,37 @@ export class PessoaDetalheComponent implements OnInit {
       });
   }
 
-  // imagem
+  toggleFormulario() {
+    this.mostrarFormulario = !this.mostrarFormulario;
+    if (this.mostrarFormulario) {
+      this.sucessoMsg = '';
+      this.erro = '';
+    }
+  }
+
   foto(): string {
     return this.pessoa?.urlFoto && this.pessoa.urlFoto.trim() !== ''
       ? this.pessoa.urlFoto
       : '/desaparecido.jpg';
   }
+
   onImgError(ev: Event) {
     (ev.target as HTMLImageElement).src = '/desaparecido.jpg';
   }
+
   dataDesap(): string {
     const d = this.pessoa?.ultimaOcorrencia?.dtDesaparecimento;
-    return d ? new Date(d).toLocaleString() : '-';
+    return d
+      ? new Date(d).toLocaleString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
+      : '-';
   }
 
-  // anexos
   onFilesSelected(ev: Event) {
     const input = ev.target as HTMLInputElement;
     this.anexos = input.files ? Array.from(input.files) : [];
@@ -117,16 +133,14 @@ export class PessoaDetalheComponent implements OnInit {
 
     const { informacao, descricao, data, ocoId } = this.infoForm.value;
 
-    // params em query string
     let params = new HttpParams()
       .set('informacao', informacao)
       .set('descricao', descricao)
-      .set('data', data) // formato yyyy-MM-dd
+      .set('data', data)
       .set('ocoId', String(ocoId));
 
-    // body multipart com os arquivos
     const formData = new FormData();
-    this.anexos.forEach((f) => formData.append('files', f)); // nome do campo: files
+    this.anexos.forEach((f) => formData.append('files', f));
 
     const url =
       'https://abitus-api.geia.vip/v1/ocorrencias/informacoes-desaparecido';
@@ -145,5 +159,40 @@ export class PessoaDetalheComponent implements OnInit {
         this.enviando = false;
       },
     });
+  }
+
+  private formatarDataISO(d?: string | null): string {
+    if (!d) return '-';
+    return new Date(d).toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+
+  statusPessoa() {
+    const p = this.pessoa;
+    const oc = p?.ultimaOcorrencia;
+
+    if (oc?.dataLocalizacao) {
+      const obito = oc.encontradoVivo === false || p?.vivo === false;
+      return {
+        tipo: obito ? ('LOCALIZADO_OBITO' as const) : ('LOCALIZADO' as const),
+        label: obito ? 'Localizado — Óbito' : 'Localizado',
+        classe: obito ? 'status obito' : 'status localizado',
+        detalhe: `Localizado em ${this.formatarDataISO(oc.dataLocalizacao)}`,
+      };
+    }
+
+    return {
+      tipo: 'DESAPARECIDO' as const,
+      label: 'Desaparecido',
+      classe: 'status desaparecido',
+      detalhe: oc?.dtDesaparecimento
+        ? `Desaparecido desde ${this.formatarDataISO(oc.dtDesaparecimento)}`
+        : 'Sem data registrada',
+    };
   }
 }
